@@ -1,0 +1,125 @@
+{
+  "jenis": "nglegena",
+  "data": [
+    {
+      "huruf": "Ha",
+      "image": "assets/img/nglegena/ha.png",
+      "audio": "audio/nglegena/ha.MP3",
+      "deskripsi": "Huruf nglegena Ha"
+    },
+    {
+      "huruf": "Na",
+      "image": "assets/img/nglegena/na.png",
+      "audio": "audio/nglegena/na.MP3",
+      "deskripsi": "Huruf nglegena Na"
+    },
+    {
+      "huruf": "Ca",
+      "image": "assets/img/nglegena/ca.png",
+      "audio": "audio/nglegena/ca.MP3",
+      "deskripsi": "Huruf nglegena Ca"
+    },
+    {
+      "huruf": "Ra",
+      "image": "assets/img/nglegena/ra.png",
+      "audio": "audio/nglegena/ra.MP3",
+      "deskripsi": "Huruf nglegena Ra"
+    },
+    {
+      "huruf": "Ka",
+      "image": "assets/img/nglegena/ka.png",
+      "audio": "audio/nglegena/ka.MP3",
+      "deskripsi": "Huruf nglegena Ka"
+    },
+    {
+      "huruf": "Da",
+      "image": "assets/img/nglegena/da.png",
+      "audio": "audio/nglegena/da.MP3",
+      "deskripsi": "Huruf nglegena Da"
+    },
+    {
+      "huruf": "Ta",
+      "image": "assets/img/nglegena/ta.png",
+      "audio": "audio/nglegena/ta.MP3",
+      "deskripsi": "Huruf nglegena Ta"
+    },
+    {
+      "huruf": "Sa",
+      "image": "assets/img/nglegena/sa.png",
+      "audio": "audio/nglegena/sa.MP3",
+      "deskripsi": "Huruf nglegena Sa"
+    },
+    {
+      "huruf": "Wa",
+      "image": "assets/img/nglegena/wa.png",
+      "audio": "audio/nglegena/wa.MP3",
+      "deskripsi": "Huruf nglegena Wa"
+    },
+    {
+      "huruf": "La",
+      "image": "assets/img/nglegena/la.png",
+      "audio": "audio/nglegena/la.MP3",
+      "deskripsi": "Huruf nglegena La"
+    },
+    {
+      "huruf": "Pa",
+      "image": "assets/img/nglegena/pa.png",
+      "audio": "audio/nglegena/pa.MP3",
+      "deskripsi": "Huruf nglegena Pa"
+    },
+    {
+      "huruf": "Dha",
+      "image": "assets/img/nglegena/dha.png",
+      "audio": "audio/nglegena/dha.MP3",
+      "deskripsi": "Huruf nglegena Dha"
+    },
+    {
+      "huruf": "Ja",
+      "image": "assets/img/nglegena/ja.png",
+      "audio": "audio/nglegena/ja.MP3",
+      "deskripsi": "Huruf nglegena Ja"
+    },
+    {
+      "huruf": "Ya",
+      "image": "assets/img/nglegena/ya.png",
+      "audio": "audio/nglegena/ya.MP3",
+      "deskripsi": "Huruf nglegena Ya"
+    },
+    {
+      "huruf": "Nya",
+      "image": "assets/img/nglegena/nya.png",
+      "audio": "audio/nglegena/nya.MP3",
+      "deskripsi": "Huruf nglegena Nya"
+    },
+    {
+      "huruf": "Ma",
+      "image": "assets/img/nglegena/ma.png",
+      "audio": "audio/nglegena/ma.MP3",
+      "deskripsi": "Huruf nglegena Ma"
+    },
+    {
+      "huruf": "Ga",
+      "image": "assets/img/nglegena/ga.png",
+      "audio": "audio/nglegena/ga.MP3",
+      "deskripsi": "Huruf nglegena Ga"
+    },
+    {
+      "huruf": "Ba",
+      "image": "assets/img/nglegena/ba.png",
+      "audio": "audio/nglegena/ba.mp3",
+      "deskripsi": "Huruf nglegena Ba"
+    },
+    {
+      "huruf": "Tha",
+      "image": "assets/img/nglegena/tha.png",
+      "audio": "audio/nglegena/tha.MP3",
+      "deskripsi": "Huruf nglegena Tha"
+    },
+    {
+      "huruf": "Nga",
+      "image": "assets/img/nglegena/nga.png",
+      "audio": "audio/nglegena/nga.MP3",
+      "deskripsi": "Huruf nglegena Nga"
+    }
+  ]
+}
