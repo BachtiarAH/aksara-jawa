@@ -8,7 +8,7 @@ class SinauNulisPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Sinau Maca')),
+      appBar: AppBar(title: const Text('Sinau Nulis')),
       body: Center(
         child: Wrap(
           spacing: 16,
@@ -39,12 +39,12 @@ class SinauNulisPage extends StatelessWidget {
               onPressed: () => Navigator.pushNamed(context, AppRoutes.sinauMacaAngka),
             ),
             MenuButton(
-              label: 'aksara Ngelege­na',
-              onPressed: () => Navigator.pushNamed(context, AppRoutes.latihanMacaNgelegena),
+              label: 'aksara Ngelegena',
+              onPressed: () => Navigator.pushNamed(context, AppRoutes.sinauNulisNgelegena),
             ),
           ],
         ),
       ),
-    );;
+    );
   }
 }

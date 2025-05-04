@@ -3,6 +3,7 @@ import 'dart:typed_data';
 import 'dart:ui' as ui;
 import 'package:flutter/material.dart';
 import 'package:nulis_aksara_jawa/core/utils/Detections.dart';
+import 'package:nulis_aksara_jawa/core/utils/YoloV8.dart';
 import 'package:nulis_aksara_jawa/data/models/aksara_model.dart';
 import 'package:flutter/services.dart';
 import 'package:nulis_aksara_jawa/data/sources/local/aksara_loader.dart';
@@ -23,8 +24,11 @@ class SinauNulisWidget extends StatefulWidget {
 class _SinauNulisWidgetState extends State<SinauNulisWidget> {
   List<AksaraModel> aksaraList = [];
   int selectedIndex = 0;
-  final SignatureController _controller =
-      SignatureController(penStrokeWidth: 4);
+  final SignatureController _controller = SignatureController(
+      penStrokeWidth: 5,
+      penColor: Colors.black,
+      exportBackgroundColor: Colors.white,
+      exportPenColor: Colors.black);
   ui.Image? _backgroundImage;
 
   @override
@@ -108,55 +112,37 @@ class _SinauNulisWidgetState extends State<SinauNulisWidget> {
   Future<void> runModel() async {
     // 1. Convert to ui.Image
     final uiImage = await _controller.toImage(width: 640, height: 640);
-    final byteData =
-        await uiImage!.toByteData(format: ui.ImageByteFormat.rawRgba);
-    final rgbaBytes = byteData!.buffer.asUint8List();
 
-    // 2. Convert RGBA -> RGB image using image package
-    img.Image rgbImage = img.Image.fromBytes(
-      width: 640,
-      height: 640,
-      bytes: rgbaBytes.buffer,
-      order: img.ChannelOrder.rgba,
+    if (uiImage == null) {
+      print("Failed to convert signature to image.");
+      return;
+    }
+
+    final model = await YOLOv8TFLite.create(
+      metadataPath: "assets/metadata.yaml",
     );
 
-    // 3. Normalize RGB -> Float32List
-    final Float32List input = Float32List(1 * 640 * 640 * 3);
-    int i = 0;
-    for (int y = 0; y < 640; y++) {
-      for (int x = 0; x < 640; x++) {
-        final pixel = rgbImage.getPixel(x, y);
-        input[i++] = pixel.r / 255.0;
-        input[i++] = pixel.g / 255.0;
-        input[i++] = pixel.b / 255.0;
-      }
+    final byteData = await uiImage.toByteData(format: ui.ImageByteFormat.png);
+    final imgBytes = byteData!.buffer.asUint8List();
+    final img.Image convertedImage = img.decodeImage(imgBytes)!;
+
+    final rectangleImage = model.letterBox(convertedImage, 640, 640);
+
+    final output = model.detect(rectangleImage.image, true);
+
+    print(output);
+
+    // show result in snackbar
+    String result = "Hasil deteksi: \n";
+    for (var element in output) {
+      result += "${element.className} (${element.score})\n";
     }
-
-    // 4. Load model and run
-    final interpreter =
-        await Interpreter.fromAsset('assets/best_float32.tflite');
-
-    // Optional: print input/output shapes
-    print("Input shape: ${interpreter.getInputTensor(0).shape}");
-    print("Output shape: ${interpreter.getOutputTensor(0).shape}");
-
-    // Allocate output buffer
-    final output = List.generate(
-        1, (_) => List.generate(24, (_) => List.filled(8400, 0.0)));
-
-    // Run model
-    interpreter.run(input.reshape([1, 640, 640, 3]), output);
-
-    print("raw output: ${output.shape}");
-
-    // Print output summary
-    final detections = nonMaxSuppression(output,
-        objectThreshold: 0.0001, iouThreshold: 0.5);
-    print("detections: ${detections.length}");
-    for (final det in detections) {
-      print(
-          'Class ${det.classId} — ${det.score.toStringAsFixed(2)} @ [${det.x1.toStringAsFixed(1)}, ${det.y1.toStringAsFixed(1)}]');
-    }
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(result),
+        duration: const Duration(seconds: 3),
+      ),
+    );
   }
 
   void onSelect(int index) {
@@ -247,6 +233,7 @@ class _SinauNulisWidgetState extends State<SinauNulisWidget> {
                         : Container(),
                   ),
                   Signature(
+                    height: 200,
                     controller: _controller,
                     backgroundColor: Colors.transparent,
                   )

@@ -13,11 +13,19 @@ class AppRoutes {
   static const String sinauMacaAngka = '/sinau/angka';
   static const String sinauMacaNgelegena = '/sinau/ngelegena';
 
-  static const String latihanMacaPasangan = '/latihan/pasangan';
-  static const String latihanMacaSwara = '/latihan/swara';
-  static const String latihanMacaMurdha = '/latihan/murdha';
-  static const String latihanMacaSandangan = '/latihan/sandangan';
-  static const String latihanMacaRekan = '/latihan/rekan';
-  static const String latihanMacaAngka = '/latihan/angka';
-  static const String latihanMacaNgelegena = '/latihan/ngelegena';
+  static const String sinauNulisPasangan = '/sinau/pasangan/nulis';
+  static const String sinauNulisSwara = '/sinau/swara/nulis';
+  static const String sinauNulisMurdha = '/sinau/murdha/nulis';
+  static const String sinauNulisSandangan = '/sinau/sandangan/nulis';
+  static const String sinauNulisRekan = '/sinau/rekan/nulis';
+  static const String sinauNulisAngka = '/sinau/angka/nulis';
+  static const String sinauNulisNgelegena = '/sinau/ngelegena/nulis';
+
+  static const String latihanMacaHuruf = '/latihan/maca/huruf';
+  static const String latihanMacaTembung = '/latihan/maca/tembung';
+
+  static const String latihanNulisHuruf = '/latihan/nulis/huruf';
+  static const String latihanNulisTembung = '/latihan/nulis/tembung';
+
+  static const String test = '/test';
 }

@@ -28,6 +28,7 @@ class HomePage extends StatelessWidget {
               label: 'latihan nulis',
               onPressed: () => Navigator.pushNamed(context, AppRoutes.latihanNulis),
             ),
+            MenuButton(label: "test", onPressed: () => Navigator.pushNamed(context, AppRoutes.test)),
           ],
         ),
       ),
