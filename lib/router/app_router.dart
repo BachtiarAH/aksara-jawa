@@ -27,5 +27,7 @@ class AppRoutes {
   static const String latihanNulisHuruf = '/latihan/nulis/huruf';
   static const String latihanNulisTembung = '/latihan/nulis/tembung';
 
+  static const String setting = '/setting';
+
   static const String test = '/test';
 }
