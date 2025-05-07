@@ -1,0 +1,2 @@
+D:/kuliah/Sempro/aset aplikasi/nulis_aksara_jawa/android/app/.cxx/RelWithDebInfo/411i155o/armeabi-v7a/CMakeFiles/edit_cache.dir
+D:/kuliah/Sempro/aset aplikasi/nulis_aksara_jawa/android/app/.cxx/RelWithDebInfo/411i155o/armeabi-v7a/CMakeFiles/rebuild_cache.dir
