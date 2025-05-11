@@ -1,2 +1,0 @@
-F:/Project/Joki/Hasil/backtiar/android/app/.cxx/RelWithDebInfo/6j1tq2sg/armeabi-v7a/CMakeFiles/edit_cache.dir
-F:/Project/Joki/Hasil/backtiar/android/app/.cxx/RelWithDebInfo/6j1tq2sg/armeabi-v7a/CMakeFiles/rebuild_cache.dir

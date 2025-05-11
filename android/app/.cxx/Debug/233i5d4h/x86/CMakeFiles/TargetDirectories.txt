@@ -1,2 +1,0 @@
-D:/kuliah/Sempro/aset aplikasi/nulis_aksara_jawa/android/app/.cxx/Debug/233i5d4h/x86/CMakeFiles/edit_cache.dir
-D:/kuliah/Sempro/aset aplikasi/nulis_aksara_jawa/android/app/.cxx/Debug/233i5d4h/x86/CMakeFiles/rebuild_cache.dir
