@@ -7,6 +7,7 @@ import 'package:nulis_aksara_jawa/data/sources/local/aksara_loader.dart';
 import 'package:signature/signature.dart';
 import 'package:image/image.dart' as img;
 import 'package:flutter_animate/flutter_animate.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 // class LatihanNulisNglegenaGabunganWidget extends StatefulWidget {
 //   const LatihanNulisNglegenaGabunganWidget({super.key});
@@ -275,6 +276,18 @@ class _LatihanNulisNglegenaGabunganWidgetState
     try {
       Uint8List? image = await _controller.toPngBytes();
 
+      final supabase = Supabase.instance.client;
+      // create random name
+      final timestamp = DateTime.now().millisecondsSinceEpoch;
+      final String fullPath = await supabase.storage
+          .from('in-app')
+          .uploadBinary(
+            'latihan/tembung/processed_image${timestamp}.png',
+            image!,
+            fileOptions: const FileOptions(cacheControl: '3600', upsert: false),
+          );
+      print('File uploaded to: $fullPath');
+
       if (image != null) {
         final img.Image convertedImage = img.decodeImage(image)!;
 
@@ -313,6 +326,11 @@ class _LatihanNulisNglegenaGabunganWidgetState
       }
     } catch (e) {
       _showSnackBar("Terjadi kesalahan: $e", isError: true);
+      if (e is StorageException) {
+        print('❌ Storage error: ${e.message}');
+      } else {
+        print('❌ Unknown error: $e');
+      }
     } finally {
       setState(() {
         isLoading = false;

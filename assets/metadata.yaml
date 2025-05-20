@@ -1,7 +1,7 @@
-description: Ultralytics best model trained on /content/aksara-jawa-1/data.yaml
+description: Ultralytics best model trained on /content/primary-1/data.yaml
 author: Ultralytics
-date: '2025-04-14T14:14:40.776058'
-version: 8.3.107
+date: '2025-05-16T14:05:15.507467'
+version: 8.3.58
 license: AGPL-3.0 License (https://ultralytics.com/license)
 docs: https://docs.ultralytics.com
 stride: 32
@@ -35,4 +35,3 @@ args:
   batch: 1
   half: false
   int8: false
-  nms: false

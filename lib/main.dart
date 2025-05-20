@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_soloud/flutter_soloud.dart';
@@ -15,6 +17,10 @@ import 'package:nulis_aksara_jawa/presentation/pages/sinau/maca_page.dart';
 import 'package:nulis_aksara_jawa/presentation/pages/sinau/nulis_page.dart';
 import 'package:nulis_aksara_jawa/router/app_router.dart';
 import 'package:nulis_aksara_jawa/test.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:image/image.dart' as img;
+import 'package:path_provider/path_provider.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -29,12 +35,49 @@ void main() async {
     DeviceOrientation.landscapeRight,
   ]);
 
+  await Supabase.initialize(
+    url: 'https://fmltycuegczeqdjufsan.supabase.co',
+    anonKey:
+        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZtbHR5Y3VlZ2N6ZXFkanVmc2FuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDY1MzYyNzcsImV4cCI6MjA2MjExMjI3N30.Dd5yuQeqJiJ2RlEW5gjDb9qP58Ht3hNhfJKo3AgKui8',
+  );
+
   await SoLoud.instance.init(
     sampleRate: 44100, // Audio quality
     bufferSize: 2048, // Buffer size affects latency
     channels: Channels.stereo,
   );
   runApp(const MyApp());
+}
+
+Future<void> uploadProcessedImage(img.Image image) async {
+  // Convert image to PNG bytes
+  Uint8List pngBytes = Uint8List.fromList(img.encodePng(image));
+
+  // // Save to temporary file
+  // final tempDir = await getTemporaryDirectory();
+  // final filePath = '${tempDir.path}/processed_image.png';
+  // final file = await File(filePath).writeAsBytes(pngBytes);
+
+  // // Upload to Supabase
+  // final storage = Supabase.instance.client.storage;
+  // final bucket = storage.from('in-app');
+
+  final timestamp = DateTime.now().millisecondsSinceEpoch;
+
+  final supabase = Supabase.instance.client;
+  final String fullPath = await supabase.storage.from('in-app').uploadBinary(
+        'processed_image_$timestamp.png',
+        pngBytes,
+        fileOptions: const FileOptions(cacheControl: '3600', upsert: false),
+      );
+
+  print('File uploaded to: $fullPath');
+
+  // final filePathInBucket = 'processed_image.png';
+
+  // final response = await bucket.upload(filePathInBucket, file);
+
+  // print('✅ Upload success! URL: $response');
 }
 
 class MyApp extends StatelessWidget {

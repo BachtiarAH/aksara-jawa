@@ -5,6 +5,8 @@ import 'package:image/image.dart' as img;
 import 'package:nulis_aksara_jawa/core/utils/YoloV8.dart';
 import 'package:signature/signature.dart';
 import 'package:flutter_animate/flutter_animate.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:tflite_flutter/tflite_flutter.dart';
 
 class LatihanTulisAksaraWidget extends StatefulWidget {
   const LatihanTulisAksaraWidget({super.key});
@@ -69,6 +71,18 @@ class _LatihanTulisAksaraWidgetState extends State<LatihanTulisAksaraWidget> {
       final imgBytes = pngBytes!.buffer.asUint8List();
       final img.Image convertedImage = img.decodeImage(imgBytes)!;
 
+      final supabase = Supabase.instance.client;
+      // create random name
+      final timestamp = DateTime.now().millisecondsSinceEpoch;
+      final String fullPath = await supabase.storage
+          .from('in-app')
+          .uploadBinary(
+            'latihan/huruf/processed_image${timestamp}.png',
+            imgBytes,
+            fileOptions: const FileOptions(cacheControl: '3600', upsert: false),
+          );
+      print('File uploaded to: $fullPath');
+
       final model = await YOLOv8TFLite.create(
         metadataPath: "assets/metadata.yaml",
       );
@@ -111,6 +125,11 @@ class _LatihanTulisAksaraWidgetState extends State<LatihanTulisAksaraWidget> {
       });
     } catch (e) {
       _showSnackBar("Terjadi kesalahan: $e", isError: true);
+      if (e is StorageException) {
+        print('❌ Storage error: ${e.message}');
+      } else {
+        print('❌ Unknown error: $e');
+      }
     } finally {
       setState(() {
         isLoading = false;
