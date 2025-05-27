@@ -109,7 +109,7 @@ class HomePage extends StatelessWidget {
                         const SizedBox(width: 15),
                     itemBuilder: (context, index) {
                       final cards = [
-                        _buildLearningCard(
+                        BuildLearningCard(
                           imagePath: "assets/Learning_new.png",
                           title: 'Sinau Maca',
                           subtitle: 'Mengenal dan Memahami\nAksara Jawa',
@@ -119,7 +119,7 @@ class HomePage extends StatelessWidget {
                               Navigator.pushNamed(
                                   context, AppRoutes.sinauMacaNgelegena),
                         ),
-                        _buildLearningCard(
+                        BuildLearningCard(
                           imagePath: "assets/exercise_new.png",
                           title: 'Sinau Nulis',
                           subtitle: 'Latihan Jawa dengan\nAksara Jawa',
@@ -127,7 +127,7 @@ class HomePage extends StatelessWidget {
                           onTap: () => Navigator.pushNamed(
                               context, AppRoutes.sinauNulisNgelegena),
                         ),
-                        _buildLearningCard(
+                        BuildLearningCard(
                           imagePath: "assets/latihan_maca.png",
                           title: 'Latihan Maca',
                           subtitle: 'Mengenal dan Memahami\nAksara Jawa',
@@ -135,7 +135,7 @@ class HomePage extends StatelessWidget {
                           onTap: () => Navigator.pushNamed(
                               context, AppRoutes.latihanMaca),
                         ),
-                        _buildLearningCard(
+                        BuildLearningCard(
                           imagePath: "assets/latihan_nulis.png",
                           title: 'Latihan Nulis',
                           subtitle: 'Latihan Jawa dengan\nAksara Jawa',
@@ -187,7 +187,7 @@ class HomePage extends StatelessWidget {
     );
   }
 
-  Widget _buildLearningCard({
+  Widget BuildLearningCard({
     required String imagePath,
     required String title,
     required String subtitle,
