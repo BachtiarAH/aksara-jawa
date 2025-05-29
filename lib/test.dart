@@ -32,7 +32,7 @@ class _LetterboxTestPageState extends State<LetterboxTestPage> {
     // Create a dummy YOLOv8TFLite instance just to access letterBox
     final dummyModel = await YOLOv8TFLite.create(metadataPath: "assets/metadata.yaml");
 
-    final result = dummyModel.letterBox(originalImage, 640, 640);
+    final result = dummyModel.letterBox(originalImage, 640, 640,0,0);
 
     final input = dummyModel.preprocessImage(originalImage, 640, 640);
     final paddedImageBytes = img.encodeJpg(result.image);

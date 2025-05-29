@@ -353,7 +353,7 @@ class _WritingPanelState extends State<WritingPanel> {
       final imgBytes = byteData!.buffer.asUint8List();
       final img.Image convertedImage = img.decodeImage(imgBytes)!;
 
-      final rectangleImage = model.letterBox(convertedImage, 640, 640);
+      final rectangleImage = model.letterBox(convertedImage, 640, 640, 0,0);
 
       try {
         final supabase = Supabase.instance.client;

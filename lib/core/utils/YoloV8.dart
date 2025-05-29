@@ -45,7 +45,7 @@ class YOLOv8TFLite {
     double? iou,
     String? metadataPath,
   }) async {
-    final confidence = conf ?? 0.25;
+    final confidence = conf ?? 0.5;
     final iouThreshold = iou ?? 0.45;
 
     List<String> classNames = [];
@@ -103,7 +103,22 @@ class YOLOv8TFLite {
     ImageLibe.Image image,
     int targetWidth,
     int targetHeight,
+    double? percenthorizontalPadding,
+    double? percentverticalPadding,
   ) {
+
+    if (percenthorizontalPadding != null || percentverticalPadding != null) {
+    final padW = ((image.width * (percenthorizontalPadding ?? 0))).toInt();
+    final padH = ((image.height * (percentverticalPadding ?? 0))).toInt();
+
+    image = ImageLibe.copyExpandCanvas(
+      image,
+      newWidth: image.width + 2 * padW,
+      newHeight: image.height + 2 * padH,
+      backgroundColor: ImageLibe.ColorFloat16.rgb(225, 225, 224),
+    );
+  }
+
     var scaleWidt = targetWidth / image.width;
     var scaleHeight = targetHeight / image.height;
 
@@ -343,6 +358,6 @@ class Detection {
   @override
   String toString() {
     // TODO: implement toString
-    return "Detection: $className, x1: $x1, y1: $y1, x2: $x2, y2: $y2, score: $score, classIndex: $classIndex, className ${className ?? "null"}, x: $x, y: $y, w: $w, h: $h";
+    return "Detection: $className, x1: $x1, y1: $y1, x2: $x2, y2: $y2, score: $score, classIndex: $classIndex, className ${className ?? "null"}, x: $x, y: $y, w: $w, h: $h \n";
   }
 }

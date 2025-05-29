@@ -1,4 +1,6 @@
+import 'dart:ffi';
 import 'dart:math';
+import 'dart:typed_data';
 import 'dart:ui' as ui;
 import 'package:flutter/material.dart';
 import 'package:image/image.dart' as img;
@@ -71,6 +73,15 @@ class _LatihanTulisAksaraWidgetState extends State<LatihanTulisAksaraWidget> {
       final imgBytes = pngBytes!.buffer.asUint8List();
       final img.Image convertedImage = img.decodeImage(imgBytes)!;
 
+      final model = await YOLOv8TFLite.create(
+        metadataPath: "assets/metadata.yaml",
+      );
+
+      final rectangleImage = model.letterBox(convertedImage, 640, 640, 0.5,
+          0.5);
+
+      final output = model.detect(rectangleImage.image, true);
+
       final supabase = Supabase.instance.client;
       // create random name
       final timestamp = DateTime.now().millisecondsSinceEpoch;
@@ -78,18 +89,10 @@ class _LatihanTulisAksaraWidgetState extends State<LatihanTulisAksaraWidget> {
           .from('in-app')
           .uploadBinary(
             'latihan/huruf/processed_image${timestamp}.png',
-            imgBytes,
+            rectangleImage.image.getBytes(),
             fileOptions: const FileOptions(cacheControl: '3600', upsert: false),
           );
       print('File uploaded to: $fullPath');
-
-      final model = await YOLOv8TFLite.create(
-        metadataPath: "assets/metadata.yaml",
-      );
-
-      final rectangleImage = model.letterBox(convertedImage, 640, 640);
-
-      final output = model.detect(rectangleImage.image, true);
 
       // Cek hasil Computer Vision
       bool isBenar = false;
@@ -112,7 +115,7 @@ class _LatihanTulisAksaraWidgetState extends State<LatihanTulisAksaraWidget> {
       if (isBenar) jumlahBenar++;
 
       // Tampilkan dialog hasil
-      await _showResultDialog(isBenar);
+      await _showResultDialog(isBenar, img.encodeJpg(rectangleImage.image));
 
       _controller.clear();
 
@@ -137,10 +140,35 @@ class _LatihanTulisAksaraWidgetState extends State<LatihanTulisAksaraWidget> {
     }
   }
 
-  void _showSnackBar(String message, {bool isError = false}) {
+  void _showSnackBar(String message,
+      {bool isError = false, Uint8List? bytesImage}) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        content: Text(message),
+        content: Column(
+          children: [
+            Text(
+              message,
+              style: TextStyle(
+                color: isError ? Colors.white : Colors.black,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            if (isError) const SizedBox(height: 5),
+            if (isError)
+              const Text(
+                "Silakan coba lagi.",
+                style: TextStyle(fontSize: 12, fontStyle: FontStyle.italic),
+              ),
+            if (bytesImage != null) const SizedBox(height: 10),
+            if (bytesImage != null)
+              Image.memory(
+                bytesImage,
+                height: 100,
+                width: 100,
+                fit: BoxFit.cover,
+              ),
+          ],
+        ),
         backgroundColor: isError ? Colors.red : primaryColor,
         behavior: SnackBarBehavior.floating,
         shape: RoundedRectangleBorder(
@@ -151,7 +179,7 @@ class _LatihanTulisAksaraWidgetState extends State<LatihanTulisAksaraWidget> {
     );
   }
 
-  Future<void> _showResultDialog(bool isBenar) async {
+  Future<void> _showResultDialog(bool isBenar, Uint8List? imageByte) async {
     return showDialog(
       context: context,
       barrierDismissible: false,
@@ -199,6 +227,14 @@ class _LatihanTulisAksaraWidgetState extends State<LatihanTulisAksaraWidget> {
                   "Coba perhatikan bentuk aksaranya dan coba lagi pada soal berikutnya.",
                   style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
                 ),
+              ),
+            if (imageByte != null) const SizedBox(width: 10),
+            if (imageByte != null)
+              Image.memory(
+                imageByte,
+                height: 50,
+                width: 50,
+                fit: BoxFit.cover,
               ),
           ],
         ),

@@ -228,7 +228,7 @@ class _LatihanNulisNglegenaGabunganWidgetState
 
       List<String> generated = [];
       for (int i = 0; i < jumlahSoal; i++) {
-        int jumlahHuruf = random.nextInt(3) + 2; // 2 - 4 huruf
+        int jumlahHuruf = random.nextInt(2) + 1; // 2 - 4 huruf
         String kata = '';
         for (int j = 0; j < jumlahHuruf; j++) {
           final aksara = allNglegena[random.nextInt(allNglegena.length)];
@@ -295,28 +295,31 @@ class _LatihanNulisNglegenaGabunganWidgetState
           metadataPath: "assets/metadata.yaml",
         );
 
-        final rectangleImage = model.letterBox(convertedImage, 640, 640);
+        final rectangleImage = model.letterBox(convertedImage, 640, 640,0.5,0.5);
 
         final output = model.detect(rectangleImage.image, true);
 
         var isCorrect = false;
 
         if (output.isNotEmpty) {
-          if (output.length == soalList[_counterSoal].length) {
-            isCorrect = true;
-            for (int i = 0; i < output.length; i++) {
-              if (!output[i].className!.contains(soalList[_counterSoal][i])) {
-                isCorrect = false;
-                break;
-              }
-            }
-          }
+          // if (output.length == soalList[_counterSoal].length) {
+          //   isCorrect = true;
+          //   for (int i = 0; i < output.length; i++) {
+          //     if (!output[i].className!.contains(soalList[_counterSoal][i])) {
+          //       isCorrect = false;
+          //       break;
+          //     }
+          //   }
+          // }
+          String outputString = output.map((e) => e.className).join('');
+          isCorrect = outputString == soalList[_counterSoal].toLowerCase();
         }
 
         if (isCorrect) _counterBenar++;
 
+        print(output);
         // Tampilkan dialog hasil
-        await _showResultDialog(isCorrect);
+        await _showResultDialog(isCorrect, img.encodeJpg(rectangleImage.image));
 
         _controller.clear();
 
@@ -338,7 +341,7 @@ class _LatihanNulisNglegenaGabunganWidgetState
     }
   }
 
-  Future<void> _showResultDialog(bool isBenar) async {
+  Future<void> _showResultDialog(bool isBenar, Uint8List? imageByte) async {
     return showDialog(
       context: context,
       barrierDismissible: false,
@@ -362,6 +365,15 @@ class _LatihanNulisNglegenaGabunganWidgetState
                 fontWeight: FontWeight.bold,
               ),
             ),
+            if (imageByte != null)
+              const SizedBox(width: 10),
+            if (imageByte != null)
+              Image.memory(
+                imageByte,
+                width: 50,
+                height: 50,
+                fit: BoxFit.cover,
+              ),
           ],
         ),
         content: Column(
